@@ -1,0 +1,35 @@
+brand,model,description,colour,fuel_type,mileage,num_doors,price,year
+Ford,Mondeo,Very old,Grey,Diesel,1400,4,1400,1990
+Ford,Focus,Compact,Red,Gasoline,80000,5,15000,2017
+Ford,Fiesta,Small,Blue,Gasoline,50000,3,8000,2014
+
+Toyota,M10,Very cool,Blue,Diesel,21000,5,21000,2015
+Toyota,Yaris,Practical,White,Gasoline,100000,3,10000,2010
+Toyota,RAV4,SUV,Silver,Hybrid,45000,5,35000,2022
+
+Kia,Sorento,Spacious,Black,Diesel,40000,5,25000,2018
+Kia,Rio,Urban,Gray,Gasoline,60000,5,12000,2019
+
+MG,ZS,Family,Red,Gasoline,30000,5,18000,2020
+MG,5,Sporty,Blue,Gasoline,80000,3,10000,2016
+
+Mazda,3,Modern,White,Gasoline,50000,5,18000,2021
+Mazda,MX-5,Convertible,Yellow,Gasoline,20000,2,25000,2015
+
+Hyundai,Tucson,Family,Silver,Diesel,60000,5,22000,2017
+Hyundai,i10,Urban,Red,Gasoline,40000,5,8000,2019
+
+Mitsubishi,ASX,SUV,Black,Gasoline,70000,5,15000,2018
+Mitsubishi,Lancer,Sporty,Blue,Gasoline,90000,4,6000,2012
+
+SsangYong,Tivoli,SUV,Gray,Diesel,50000,5,20000,2019
+SsangYong,Korando,Family,Silver,Gasoline,80000,5,12000,2015
+
+Suzuki,Swift,Small,Red,Gasoline,45000,3,9000,2020
+Suzuki,Vitara,SUV,Blue,Gasoline,65000,5,16000,2018
+
+Alfa Romeo,Giulietta,Sporty,Black,Gasoline,30000,4,28000,2016
+Alfa Romeo,Stelvio,SUV,Gray,Diesel,20000,5,40000,2021
+
+BYD,Tang,SUV,White,Electric,15000,5,45000,2023
+BYD,Han,Sporty,Blue,Electric,10000,4,50000,2022

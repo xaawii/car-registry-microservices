@@ -1,0 +1,42 @@
+spring:
+  cloud:
+    config:
+      enabled: true
+      uri: http://localhost:8082
+
+  datasource:
+    driver-class-name: ${DB_DRIVER:com.mysql.cj.jdbc.Driver}
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3906}/${DB_NAME:CarRegistry}
+    username: ${DB_USER:xavi}
+    password: ${DB_PASSWORD:password}
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: ${DB_DIALECT:org.hibernate.dialect.MySQLDialect}
+
+  application:
+    name: car-registry
+
+  liquibase:
+    change-log: classpath:db/changelog.xml
+
+  servlet:
+    multipart:
+      max-file-size: ${MAX_FILE_SIZE:200MB}
+      max-request-size: ${MAX_REQUEST_SIZE:215MB}
+
+server:
+  servlet:
+    session:
+      timeout: ${SESSION_TIMOUT:60s}
+
+token:
+  secret:
+    key: wfhLGFhP1fQwtcNhgy0sRfZY9w/6DYj0u8NrsFbU5RxJKyv5rQlx45f3oQOX1uHsIyCfAjJIu77wFVdo/QlIGA==
+  expirationms: 3600000
+
+
