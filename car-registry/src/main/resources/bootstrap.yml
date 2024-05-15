@@ -2,12 +2,12 @@ spring:
   cloud:
     config:
       enabled: true
-      uri: http://localhost:8082
+      uri: http://localhost:8081
 
   datasource:
     driver-class-name: ${DB_DRIVER:com.mysql.cj.jdbc.Driver}
-    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3906}/${DB_NAME:CarRegistry}
-    username: ${DB_USER:xavi}
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:8002}/${DB_NAME:CarRegistry}
+    username: ${DB_USER:root}
     password: ${DB_PASSWORD:password}
 
   jpa:
