@@ -5,6 +5,7 @@ import com.xmartin.userservice.controller.dtos.UserRequest;
 import com.xmartin.userservice.controller.mappers.UserMapper;
 import com.xmartin.userservice.exceptions.UserNotFoundException;
 import com.xmartin.userservice.service.impl.UserServiceImpl;
+import feign.FeignException;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -69,6 +70,18 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with email " + email + " not found.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+    }
+
+    @GetMapping("/cars/{id}")
+    public ResponseEntity<?> getCar(@PathVariable Integer id) {
+
+        try {
+            return ResponseEntity.ok(userService.getCar(id));
+
+        } catch (FeignException.NotFound e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
     }
