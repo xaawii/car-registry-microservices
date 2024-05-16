@@ -18,14 +18,15 @@ spring:
           enabled: true
           lowerCaseServiceId: true
       routes:
+        - id: user-service
+            uri: lb://user-service
+            predicates:
+              - Path=/users/**
         - id: car-registry
             uri: lb://car-registry
             predicates:
               - Path=/cars/**
               - Path=/brands/**
-        - id: user-service
-          uri: lb://user-service
-          predicates:
-            - Path=/users/**
+        
         
        
