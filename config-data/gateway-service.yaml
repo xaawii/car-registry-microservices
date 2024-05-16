@@ -20,12 +20,9 @@ spring:
         - id: user-service
           uri: lb://user-service
           predicates:
-            - Path=/users/**
-          filters:
-            - StripPrefix=1
+            - Path=/users/**   
         - id: car-registry
           uri: lb://car-registry
           predicates:
             - Path=/cars/**
-          filters:
-            - StripPrefix=1
+       
