@@ -16,6 +16,7 @@ spring:
       discovery:
         locator:
           enabled: true
+          lowerCaseServiceId: true
       routes:
         - id: car-registry
             uri: lb://car-registry
