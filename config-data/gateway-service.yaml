@@ -25,4 +25,5 @@ spring:
           uri: lb://car-registry
           predicates:
             - Path=/cars/**
+            - Path=/brands/**
        
