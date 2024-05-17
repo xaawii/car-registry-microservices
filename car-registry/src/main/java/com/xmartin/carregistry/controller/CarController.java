@@ -26,7 +26,7 @@ import java.util.concurrent.CompletableFuture;
 
 @RestController
 @Slf4j
-@RequestMapping("/cars")
+@RequestMapping("/concessionaire/cars")
 @RequiredArgsConstructor
 public class CarController {
 

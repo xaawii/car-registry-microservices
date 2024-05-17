@@ -22,7 +22,7 @@ import java.util.concurrent.CompletableFuture;
 
 @RestController
 @Slf4j
-@RequestMapping("/brands")
+@RequestMapping("/concessionaire/brands")
 @RequiredArgsConstructor
 public class BrandController {
 
