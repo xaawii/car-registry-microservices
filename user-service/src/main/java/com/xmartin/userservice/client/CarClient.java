@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "car-registry")
 public interface CarClient {
 
-    @GetMapping("/cars/{id}")
+    @GetMapping("/concessionaire/cars/{id}")
     public String getCar(@PathVariable Integer id);
 }

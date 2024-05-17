@@ -6,6 +6,7 @@ import com.xmartin.userservice.controller.mappers.UserMapper;
 import com.xmartin.userservice.exceptions.UserNotFoundException;
 import com.xmartin.userservice.service.impl.UserServiceImpl;
 import feign.FeignException;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -74,6 +75,7 @@ public class UserController {
 
     }
 
+    @CircuitBreaker(name = "concessionaire", fallbackMethod = "fallbackGetCar")
     @GetMapping("/cars/{id}")
     public ResponseEntity<?> getCar(@PathVariable Integer id) {
 
@@ -118,5 +120,9 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    public ResponseEntity<?> fallbackGetCar (@PathVariable Integer id, RuntimeException e){
+        return ResponseEntity.ok("No hay coches");
     }
 }
