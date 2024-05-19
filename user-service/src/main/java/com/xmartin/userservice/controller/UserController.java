@@ -123,6 +123,6 @@ public class UserController {
     }
 
     public ResponseEntity<?> fallbackGetCar (@PathVariable Integer id, RuntimeException e){
-        return ResponseEntity.ok("No hay coches");
+        return ResponseEntity.ok("Servicio no disponible, inténtelo más tarde");
     }
 }
