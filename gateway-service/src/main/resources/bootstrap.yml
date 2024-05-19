@@ -9,6 +9,18 @@ spring:
 
   security:
     oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:8180/realms/master
+      client:
+        provider:
+          keycloak:
+            authorization-uri: http://localhost:8180/realms/car-registry/protocol/openid-connect/auth
+            userinfo-uri: http://localhost:8180/realms/car-registry/protocol/openid-connect/userinfo
+            user-name-attribute: preferred_username
+            token-uri: http://localhost:8180/realms/car-registry/protocol/openid-connect/token
+        registration:
+          car-registry-realm:
+            provider: keycloak
+            client-id: car-registry-realm
+            client-secret: OYWf0tr7eDi5IVTVJN9eAzTVJfVm4Eby
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:8080/login/oauth2/code/car-registry
+
