@@ -13,8 +13,8 @@ eureka:
 spring:
   cloud:
     gateway:
-    default-filters:
-      - TokenRelay
+      default-filters:
+        - TokenRelay
       discovery:
         locator:
           enabled: true
@@ -40,11 +40,13 @@ spring:
             userinfo-uri: http://localhost:8180/realms/car-registry/protocol/openid-connect/userinfo
             user-name-attribute: preferred_username
             token-uri: http://localhost:8180/realms/car-registry/protocol/openid-connect/token
+            issuer-uri: http://localhost:8180/realms/car-registry
         registration:
-          car-registry-realm:
+          car-registry-backend:
             provider: keycloak
-            client-id: car-registry-realm
-            client-secret: OYWf0tr7eDi5IVTVJN9eAzTVJfVm4Eby
+            client-id: car-registry-backend
+            client-secret: kik90hg7gwqWNDWlBgX5YvqHzAnMnCXx
             authorization-grant-type: authorization_code
-            redirect-uri: http://localhost:8080/login/oauth2/code/car-registry
+            scope: openid
+            redirect-uri: http://localhost:8080/login/oauth2/code/car-registry-backend
         
