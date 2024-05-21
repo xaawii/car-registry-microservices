@@ -30,6 +30,10 @@ spring:
           uri: lb://car-registry
           predicates:
             - Path=/concessionaire/**
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth/**
         
   security:
     oauth2:
