@@ -1,0 +1,19 @@
+
+L
+java:S1874"1Remove this use of "setClaims"; it is deprecated.(æõíûúÿÿÿÿ
+M
+java:S1874"2Remove this use of "setSubject"; it is deprecated.(÷§¶Ğıÿÿÿÿ
+P
+java:S1874 ":Remove this use of "SignatureAlgorithm"; it is deprecated.(´º‹ø
+P
+java:S1874 ":Remove this use of "SignatureAlgorithm"; it is deprecated.(´º‹ø
+K
+java:S1874&"5Remove this use of "setSigningKey"; it is deprecated.(ÂàÖˆ
+L
+java:S1874&"6Remove this use of "parseClaimsJws"; it is deprecated.(ÂàÖˆ
+K
+java:S1874/"5Remove this use of "setSigningKey"; it is deprecated.(íœ×ú
+L
+java:S1874/"6Remove this use of "parseClaimsJws"; it is deprecated.(íœ×ú
+E
+java:S1874/"/Remove this use of "getBody"; it is deprecated.(íœ×ú

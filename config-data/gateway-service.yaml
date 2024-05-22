@@ -26,6 +26,7 @@ spring:
             - Path=/users/**
           filters:
             - RemoveRequestHeader=Cookie
+            - AuthFilter
         - id: car-registry
           uri: lb://car-registry
           predicates:
