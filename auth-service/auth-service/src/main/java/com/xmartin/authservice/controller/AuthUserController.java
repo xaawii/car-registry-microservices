@@ -1,9 +1,10 @@
 package com.xmartin.authservice.controller;
 
-import com.xmartin.authservice.controller.dto.AuthUserDto;
+import com.xmartin.authservice.controller.dto.LoginDto;
+import com.xmartin.authservice.controller.dto.RegisterDto;
 import com.xmartin.authservice.controller.dto.TokenDto;
 import com.xmartin.authservice.entity.AuthUser;
-import com.xmartin.authservice.service.impl.AuthUserService;
+import com.xmartin.authservice.service.AuthUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +18,8 @@ public class AuthUserController {
     private final AuthUserService authUserService;
 
     @PostMapping("/login")
-    public ResponseEntity<TokenDto> login(@RequestBody AuthUserDto authUserDto) {
-        TokenDto tokenDto = authUserService.login(authUserDto);
+    public ResponseEntity<TokenDto> login(@RequestBody LoginDto loginDto) {
+        TokenDto tokenDto = authUserService.login(loginDto);
         if (tokenDto == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } else {
@@ -37,8 +38,8 @@ public class AuthUserController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<AuthUser> save(@RequestBody AuthUserDto authUserDto) {
-        AuthUser authUser = authUserService.save(authUserDto);
+    public ResponseEntity<AuthUser> save(@RequestBody RegisterDto registerDto) {
+        AuthUser authUser = authUserService.save(registerDto);
         if (authUser == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } else {

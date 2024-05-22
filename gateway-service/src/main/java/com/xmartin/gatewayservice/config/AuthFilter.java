@@ -1,7 +1,6 @@
 package com.xmartin.gatewayservice.config;
 
 import com.xmartin.gatewayservice.controller.dto.TokenDto;
-import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpHeaders;
@@ -13,10 +12,14 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 @Component
-@RequiredArgsConstructor
 public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> {
 
-    private final WebClient.Builder webclient;
+    private WebClient.Builder webclient;
+
+    public AuthFilter(WebClient.Builder webclient) {
+        super(Config.class);
+        this.webclient = webclient;
+    }
 
     @Override
     public GatewayFilter apply(Config config) {
@@ -28,6 +31,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
             String[] chunks = tokenHeader.split(" ");
             if ((chunks.length != 2) || !(chunks[0].equals("Bearer")))
                 return onError(exchange, HttpStatus.BAD_REQUEST);
+
 
             return webclient.build()
                     .post()
@@ -46,6 +50,6 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
         return response.setComplete();
     }
 
-    public class Config {
+    public static class Config {
     }
 }

@@ -1,6 +1,5 @@
-package com.xmartin.authservice.entity;
+package com.xmartin.authservice.controller.dto;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,15 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-@Entity
-@Table(name = "user")
-public class AuthUser {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class RegisterDto {
     private String name;
     private String email;
     private String password;
-    private String role;
 }
