@@ -34,23 +34,3 @@ spring:
           uri: lb://auth-service
           predicates:
             - Path=/auth/**
-        
-  security:
-    oauth2:
-      client:
-        provider:
-          keycloak:
-            authorization-uri: http://localhost:8180/realms/car-registry/protocol/openid-connect/auth
-            userinfo-uri: http://localhost:8180/realms/car-registry/protocol/openid-connect/userinfo
-            user-name-attribute: preferred_username
-            token-uri: http://localhost:8180/realms/car-registry/protocol/openid-connect/token
-            issuer-uri: http://localhost:8180/realms/car-registry
-        registration:
-          car-registry-backend:
-            provider: keycloak
-            client-id: car-registry-backend
-            client-secret: kik90hg7gwqWNDWlBgX5YvqHzAnMnCXx
-            authorization-grant-type: authorization_code
-            scope: openid
-            redirect-uri: http://localhost:8080/login/oauth2/code/car-registry-backend
-        

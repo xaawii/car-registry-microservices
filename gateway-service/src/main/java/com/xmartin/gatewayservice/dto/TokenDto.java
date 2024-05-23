@@ -1,4 +1,4 @@
-package com.xmartin.gatewayservice.controller.dto;
+package com.xmartin.gatewayservice.dto;
 
 
 import lombok.AllArgsConstructor;
