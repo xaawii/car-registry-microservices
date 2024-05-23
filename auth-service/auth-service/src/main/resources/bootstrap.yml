@@ -22,4 +22,4 @@ spring:
         dialect: ${DB_DIALECT:org.hibernate.dialect.MySQLDialect}
 
 jwt:
-  secret: c2VjcmV0
+  secret: aG9sYSBxdWUgdGFsIG1lIGxsYW1vIHhhdmkgamlqaWphamFqanVqdWp1IGVzdG8gZXMgdW5hIHBydWViYSBkZSBjbGF2ZSBlbmNyaXB0YWRhIGVuIGJhc2U2NCBwYXJhIHVzYXIgY29tbyBzZWNyZXQ=
