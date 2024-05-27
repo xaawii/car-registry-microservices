@@ -28,6 +28,8 @@ spring:
           uri: lb://car-registry
           predicates:
             - Path=/concessionaire/**
+          filters:
+            - AuthFilter
         - id: auth-service
           uri: lb://auth-service
           predicates:

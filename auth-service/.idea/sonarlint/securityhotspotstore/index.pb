@@ -25,3 +25,7 @@ Oauth-service/src/main/java/com/xmartin/authservice/controller/dto/LoginDto.java
 Rauth-service/src/main/java/com/xmartin/authservice/controller/dto/RegisterDto.java,4\c\4c6b462cc5da0adc87e56f2b287ebda8a20ebfaf
 
 Oauth-service/src/main/java/com/xmartin/authservice/service/AuthUserService.java,7\b\7b8a2572b079e4234ef07d6e9cf092e24bb93692
+
+Oauth-service/src/main/java/com/xmartin/authservice/security/RouteValidator.java,e\9\e99f2456ede74912defbe3e853ae0a79f5e29300
+Å
+Qauth-service/src/main/java/com/xmartin/authservice/controller/dto/RequestDto.java,7\f\7fa418f62bc7a884cf54919aa78d9c234a4971dc

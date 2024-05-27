@@ -2,6 +2,7 @@ package com.xmartin.authservice.controller;
 
 import com.xmartin.authservice.controller.dto.LoginDto;
 import com.xmartin.authservice.controller.dto.RegisterDto;
+import com.xmartin.authservice.controller.dto.RequestDto;
 import com.xmartin.authservice.controller.dto.TokenDto;
 import com.xmartin.authservice.entity.AuthUser;
 import com.xmartin.authservice.service.AuthUserService;
@@ -28,8 +29,8 @@ public class AuthUserController {
     }
 
     @PostMapping("/validate")
-    public ResponseEntity<TokenDto> validate(@RequestParam String token) {
-        TokenDto tokenDto = authUserService.validate(token);
+    public ResponseEntity<TokenDto> validate(@RequestParam String token, @RequestBody RequestDto requestDto) {
+        TokenDto tokenDto = authUserService.validate(token, requestDto);
         if (tokenDto == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } else {

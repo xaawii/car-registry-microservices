@@ -2,6 +2,7 @@ package com.xmartin.authservice.service.impl;
 
 import com.xmartin.authservice.controller.dto.LoginDto;
 import com.xmartin.authservice.controller.dto.RegisterDto;
+import com.xmartin.authservice.controller.dto.RequestDto;
 import com.xmartin.authservice.controller.dto.TokenDto;
 import com.xmartin.authservice.entity.AuthUser;
 import com.xmartin.authservice.repository.AuthUserRepository;
@@ -50,8 +51,8 @@ public class AuthUserServiceImpl implements AuthUserService {
     }
 
     @Override
-    public TokenDto validate(String token) {
-        if (!jwtProvider.validate(token)) return null;
+    public TokenDto validate(String token, RequestDto requestDto) {
+        if (!jwtProvider.validate(token, requestDto)) return null;
 
         String email = jwtProvider.getEmailFromToken(token);
         if (authUserRepository.findByEmailIgnoreCase(email).isEmpty()) return null;

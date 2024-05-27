@@ -23,3 +23,50 @@ spring:
 
 jwt:
   secret: aG9sYSBxdWUgdGFsIG1lIGxsYW1vIHhhdmkgamlqaWphamFqanVqdWp1IGVzdG8gZXMgdW5hIHBydWViYSBkZSBjbGF2ZSBlbmNyaXB0YWRhIGVuIGJhc2U2NCBwYXJhIHVzYXIgY29tbyBzZWNyZXQ=
+  expirationms: 3600000
+
+admin-paths:
+  paths:
+    -
+      uri: "/users/cars/{1}{1-9}+{0-9}"
+      method: "GET"
+
+    -
+      uri: "/users/{.+}"
+      method: "DELETE"
+
+    -
+      uri: "/concessionaire/cars/{1}{1-9}+{0-9}"
+      method: "DELETE"
+
+    -
+      uri: "/concessionaire/cars/{1}{1-9}+{0-9}"
+      method: "PUT"
+
+    -
+      uri: "/concessionaire/cars"
+      method: "POST"
+
+    -
+      uri: "/concessionaire/cars/batch"
+      method: "POST"
+
+    -
+      uri: "/concessionaire/cars/uploadCsv"
+      method: "POST"
+
+    -
+      uri: "/concessionaire/brands/{1}{1-9}+{0-9}"
+      method: "DELETE"
+
+    -
+      uri: "/concessionaire/brands/{1}{1-9}+{0-9}"
+      method: "PUT"
+
+    -
+      uri: "/concessionaire/brands"
+      method: "POST"
+
+    -
+      uri: "/concessionaire/brands/uploadCsv"
+      method: "POST"

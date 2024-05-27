@@ -1,5 +1,6 @@
 package com.xmartin.gatewayservice.config;
 
+import com.xmartin.gatewayservice.dto.RequestDto;
 import com.xmartin.gatewayservice.dto.TokenDto;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -36,6 +37,11 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
             return webclient.build()
                     .post()
                     .uri("http://auth-service/auth/validate?token=" + chunks[1])
+                    .bodyValue(RequestDto
+                            .builder()
+                            .uri(exchange.getRequest().getPath().toString())
+                            .method(exchange.getRequest().getMethod().toString())
+                            .build())
                     .retrieve().bodyToMono(TokenDto.class)
                     .map(tokenDto -> {
                         tokenDto.getToken();
