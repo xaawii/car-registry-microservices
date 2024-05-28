@@ -4,12 +4,19 @@ spring:
       enabled: true
       uri: http://localhost:8081
 
+    vault:
+      application:
+        name: car-registry
+      scheme: http
+      authentication: TOKEN
+      host: localhost
+      token:
+      port: '8200'
+
 
   datasource:
     driver-class-name: ${DB_DRIVER:com.mysql.cj.jdbc.Driver}
     url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:8002}/${DB_NAME:CarRegistry}
-    username: ${DB_USER:root}
-    password: ${DB_PASSWORD:password}
 
   jpa:
     show-sql: true

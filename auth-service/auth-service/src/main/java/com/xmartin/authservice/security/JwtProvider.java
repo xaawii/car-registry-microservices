@@ -2,6 +2,7 @@ package com.xmartin.authservice.security;
 
 import com.xmartin.authservice.controller.dto.RequestDto;
 import com.xmartin.authservice.entity.AuthUser;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -48,7 +49,7 @@ public class JwtProvider {
             return false;
         }
 
-        if (!isAdmin(token) && routeValidator.isAdminPath(requestDto)) {
+        if (isTokenExpired(token) || !isAdmin(token) && routeValidator.isAdminPath(requestDto)) {
             return false;
         } else {
             return true;
@@ -56,22 +57,35 @@ public class JwtProvider {
 
     }
 
+    private boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
+    private Date extractExpiration(String token) {
+        return extractAllClaims(token).getExpiration();
+    }
+
     private boolean isAdmin(String token) {
-        return Jwts.parser()
-                .setSigningKey(getSigningKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
+        return extractAllClaims(token)
                 .get("role")
                 .equals("ROLE_ADMIN");
     }
 
     public String getEmailFromToken(String token) {
         try {
-            return Jwts.parser().setSigningKey(getSigningKey()).build().parseClaimsJws(token).getBody().getSubject();
+            return extractAllClaims(token).getSubject();
         } catch (Exception e) {
             return "bad token";
         }
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts
+                .parser()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     private Key getSigningKey() {

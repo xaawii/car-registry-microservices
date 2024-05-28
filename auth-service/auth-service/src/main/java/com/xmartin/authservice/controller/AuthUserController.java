@@ -32,7 +32,7 @@ public class AuthUserController {
     public ResponseEntity<TokenDto> validate(@RequestParam String token, @RequestBody RequestDto requestDto) {
         TokenDto tokenDto = authUserService.validate(token, requestDto);
         if (tokenDto == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         } else {
             return ResponseEntity.ok(tokenDto);
         }
