@@ -8,3 +8,19 @@ spring:
       uri: http://localhost:8081
 
 
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - url: /v3/api-docs
+        name: API Gateway Service
+      - url: /car-registry/v3/api-docs
+        name: Car Registry
+      - url: /user-service/v3/api-docs
+        name: User Service
+
+
