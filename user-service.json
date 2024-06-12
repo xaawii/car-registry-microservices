@@ -1,0 +1,5 @@
+{
+    "jwt.secret": "aG9sYSBxdWUgdGFsIG1lIGxsYW1vIHhhdmkgamlqaWphamFqanVqdWp1IGVzdG8gZXMgdW5hIHBydWViYSBkZSBjbGF2ZSBlbmNyaXB0YWRhIGVuIGJhc2U2NCBwYXJhIHVzYXIgY29tbyBzZWNyZXQ=",
+    "spring.datasource.password": "password",
+    "spring.datasource.username": "xavi"
+  }
