@@ -23,4 +23,4 @@ springdoc:
       - url: /user-service/v3/api-docs
         name: User Service
 
-
+    disable-swagger-default-url: true
