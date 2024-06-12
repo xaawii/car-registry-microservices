@@ -6,19 +6,12 @@ spring:
       enabled: true
       uri: http://localhost:8081
 
-    vault:
-      application:
-        name: user-service
-      scheme: http
-      authentication: TOKEN
-      host: localhost
-      token:
-      port: '8200'
-
 
   datasource:
     driver-class-name: ${DB_DRIVER:com.mysql.cj.jdbc.Driver}
     url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3907}/${DB_NAME:Auth}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
 
   jpa:
     show-sql: true
@@ -40,4 +33,16 @@ server:
   servlet:
     session:
       timeout: ${SESSION_TIMOUT:60s}
+
+
+openapi:
+  service:
+    title: user-service doc
+    version: 1.0.0
+    url: http://localhost:8080 #api gateway url
+springdoc:
+  api-docs:
+    path: /user-service/v3/api-docs
+  swagger-ui:
+    path: /user-service/swagger-ui.html
 
