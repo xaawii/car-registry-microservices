@@ -43,7 +43,7 @@ openapi:
     url: http://localhost:8080 #api gateway url
 springdoc:
   api-docs:
-    path: /car-registry/v3/api-docs
+    path: /concessionaire/v3/api-docs
   swagger-ui:
-    path: /car-registry/swagger-ui.html
+    path: /concessionaire/swagger-ui.html
 

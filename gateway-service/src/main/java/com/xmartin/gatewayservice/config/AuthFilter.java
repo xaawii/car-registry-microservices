@@ -26,6 +26,12 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
     @Override
     public GatewayFilter apply(Config config) {
         return (((exchange, chain) -> {
+
+            String path = exchange.getRequest().getURI().getPath();
+            if (isSwaggerPath(path)) {
+                return chain.filter(exchange);
+            }
+
             if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION))
                 return onError(exchange, HttpStatus.UNAUTHORIZED);
 
@@ -63,6 +69,15 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
         response.setStatusCode(status);
         return response.setComplete();
     }
+
+    private boolean isSwaggerPath(String path) {
+        return path.contains("/swagger-ui.html") ||
+                path.contains("/swagger-resources") ||
+                path.contains("/v2/api-docs") ||
+                path.contains("/v3/api-docs") ||
+                path.contains("/webjars/springfox-swagger-ui");
+    }
+
 
     public static class Config {
     }
