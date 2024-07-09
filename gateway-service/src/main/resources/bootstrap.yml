@@ -18,7 +18,7 @@ springdoc:
     urls:
       - url: /v3/api-docs
         name: API Gateway Service
-      - url: /concessionaire/v3/api-docs
+      - url: /car-registry/v3/api-docs
         name: Car Registry
       - url: /user-service/v3/api-docs
         name: User Service

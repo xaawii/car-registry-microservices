@@ -6,12 +6,15 @@ import com.xmartin.authservice.controller.dto.RequestDto;
 import com.xmartin.authservice.controller.dto.TokenDto;
 import com.xmartin.authservice.model.UserModel;
 import com.xmartin.authservice.service.AuthUserService;
+import feign.FeignException;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.ConnectException;
 
 @RestController
 @RequestMapping("/auth")
@@ -57,15 +60,15 @@ public class AuthUserController {
         }
     }
 
-    public ResponseEntity<?> fallbackLogin(@RequestBody LoginDto loginDto, Exception e) {
+    public ResponseEntity<?> fallbackLogin(@RequestBody LoginDto loginDto, FeignException.ServiceUnavailable e) {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Service not available, try again later.");
     }
 
-    public ResponseEntity<?> fallbackValidate(@RequestParam String token, @RequestBody RequestDto requestDto, Exception e) {
+    public ResponseEntity<?> fallbackValidate(@RequestParam String token, @RequestBody RequestDto requestDto, FeignException.ServiceUnavailable e) {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Service not available, try again later.");
     }
 
-    public ResponseEntity<?> fallbackSave(@RequestBody RegisterDto registerDto, Exception e) {
+    public ResponseEntity<?> fallbackSave(@RequestBody RegisterDto registerDto, FeignException.ServiceUnavailable e) {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Service not available, try again later.");
     }
 }
