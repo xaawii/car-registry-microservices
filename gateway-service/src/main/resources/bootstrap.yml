@@ -22,5 +22,7 @@ springdoc:
         name: Car Registry
       - url: /user-service/v3/api-docs
         name: User Service
+      - url: /auth-service/v3/api-docs
+        name: Auth Service
 
     disable-swagger-default-url: true

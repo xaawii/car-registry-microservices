@@ -1,6 +1,5 @@
-package com.xmartin.authservice.entity;
+package com.xmartin.authservice.model;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,12 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-@Entity
-@Table(name = "user")
-public class AuthUser {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserModel {
     private int id;
     private String name;
     private String email;

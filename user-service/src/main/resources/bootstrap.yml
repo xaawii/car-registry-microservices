@@ -42,7 +42,7 @@ openapi:
     url: http://localhost:8080 #api gateway url
 springdoc:
   api-docs:
-    path: /user-service/v3/api-docs
+    path: /v3/api-docs
   swagger-ui:
-    path: /user-service/swagger-ui.html
+    path: /swagger-ui.html
 

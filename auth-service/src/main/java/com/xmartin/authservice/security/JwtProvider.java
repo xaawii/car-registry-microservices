@@ -1,7 +1,7 @@
 package com.xmartin.authservice.security;
 
 import com.xmartin.authservice.controller.dto.RequestDto;
-import com.xmartin.authservice.entity.AuthUser;
+import com.xmartin.authservice.model.UserModel;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -27,15 +27,15 @@ public class JwtProvider {
 
     private final RouteValidator routeValidator;
 
-    public String createToken(AuthUser authUser) {
+    public String createToken(UserModel userModel) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("id", authUser.getId());
-        claims.put("role", authUser.getRole());
+        claims.put("id", userModel.getId());
+        claims.put("role", userModel.getRole());
 
         return Jwts
                 .builder()
                 .setClaims(claims)
-                .setSubject(authUser.getEmail())
+                .setSubject(userModel.getEmail())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expirationms))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)

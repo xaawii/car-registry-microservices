@@ -8,6 +8,6 @@ spring:
     config:
       server:
         git:
-          default-label: main
+          default-label: fixes
           uri: https://github.com/xaawii/car-registry-microservices
           search-paths: config-data
