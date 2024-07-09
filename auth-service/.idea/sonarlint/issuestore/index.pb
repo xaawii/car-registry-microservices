@@ -24,8 +24,6 @@ r
 Bsrc/main/java/com/xmartin/authservice/service/AuthUserService.java,9\e\9e1c98017f132085cb4ae5f630a08a78d4fb2222
 l
 <src/main/java/com/xmartin/authservice/client/UserClient.java,4\f\4fe3429c5900a1cd4659888759cf62042305f0c0
-i
-9src/main/java/com/xmartin/authservice/model/AuthUser.java,6\b\6b95234bc61d7fffd23569d665ce93a5bbf0d5b6
 j
 :src/main/java/com/xmartin/authservice/model/UserModel.java,0\3\03706dd471568c22bf18e7eb229be16d5de8dcd5
 q

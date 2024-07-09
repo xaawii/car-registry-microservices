@@ -60,15 +60,23 @@ public class AuthUserController {
         }
     }
 
-    public ResponseEntity<?> fallbackLogin(@RequestBody LoginDto loginDto, FeignException.ServiceUnavailable e) {
-        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Service not available, try again later.");
+    public ResponseEntity<?> fallbackLogin(@RequestBody LoginDto loginDto, Exception e) {
+        return failConnectionHandler(e);
     }
 
-    public ResponseEntity<?> fallbackValidate(@RequestParam String token, @RequestBody RequestDto requestDto, FeignException.ServiceUnavailable e) {
-        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Service not available, try again later.");
+    public ResponseEntity<?> fallbackValidate(@RequestParam String token, @RequestBody RequestDto requestDto, Exception e) {
+        return failConnectionHandler(e);
     }
 
-    public ResponseEntity<?> fallbackSave(@RequestBody RegisterDto registerDto, FeignException.ServiceUnavailable e) {
-        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Service not available, try again later.");
+    public ResponseEntity<?> fallbackSave(@RequestBody RegisterDto registerDto, Exception e) {
+        return failConnectionHandler(e);
+    }
+
+    private static ResponseEntity<String> failConnectionHandler(Exception e) {
+        if (e instanceof FeignException.ServiceUnavailable || e instanceof ConnectException) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Service not available, try again later.");
+        }
+
+        throw new RuntimeException(e);
     }
 }
