@@ -1,8 +1,6 @@
 package com.xmartin.userservice.service.impl;
 
 
-
-import com.xmartin.userservice.client.CarClient;
 import com.xmartin.userservice.domain.User;
 import com.xmartin.userservice.entity.UserEntity;
 import com.xmartin.userservice.exceptions.UserNotFoundException;
@@ -26,7 +24,7 @@ public class UserServiceImpl implements UserService {
     //proporciona una instancia de user repository
     private final UserRepository userRepository;
     private final UserConverter userConverter;
-    private final CarClient client;
+
 
     //guarda un nuevo usuario en la bbdd
     @Override
@@ -35,9 +33,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String getCar(Integer id){
-        return client.getCar(id);
+    public boolean userExists(String email) {
+        return userRepository.existsByEmail(email);
     }
+
 
     @Override
     public User getUserByEmail(String email) throws UserNotFoundException {

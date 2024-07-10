@@ -13,7 +13,7 @@ public interface UserService {
     //guarda un nuevo usuario en la bbdd
     public User save(User newUser);
 
-    String getCar(Integer id);
+    boolean userExists(String email);
 
     public User getUserByEmail(String email) throws UserNotFoundException;
 

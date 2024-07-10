@@ -24,8 +24,9 @@ public class AuthUserServiceImpl implements AuthUserService {
 
     @Override
     public UserModel save(RegisterDto registerDto) {
-        Optional<UserModel> user = userClient.getUserByEmail(registerDto.getEmail());
-        if (user.isPresent()) return null;
+
+        boolean exists = userClient.getUserExistsByEmail(registerDto.getEmail());
+        if (exists) return null;
 
         String password = passwordEncoder.encode(registerDto.getPassword());
 
@@ -42,7 +43,7 @@ public class AuthUserServiceImpl implements AuthUserService {
     @Override
     public TokenDto login(LoginDto loginDto) {
         Optional<UserModel> user = userClient.getUserByEmail(loginDto.getEmail());
-        if (!user.isPresent()) return null;
+        if (user.isEmpty()) return null;
         if (passwordEncoder.matches(loginDto.getPassword(), user.get().getPassword())) {
             return new TokenDto(jwtProvider.createToken(user.get()));
         } else {

@@ -5,8 +5,6 @@ import com.xmartin.userservice.controller.dtos.UserRequest;
 import com.xmartin.userservice.controller.mappers.UserMapper;
 import com.xmartin.userservice.exceptions.UserNotFoundException;
 import com.xmartin.userservice.service.impl.UserServiceImpl;
-import feign.FeignException;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -75,15 +73,15 @@ public class UserController {
 
     }
 
-    @CircuitBreaker(name = "concessionaire", fallbackMethod = "fallbackGetCar")
-    @GetMapping("/cars/{id}")
-    public ResponseEntity<?> getCar(@PathVariable Integer id) {
+    @Operation(summary = "Check if user exist by email", description = "Check if user exist by email")
+    @GetMapping("/exist/{email}")
+    public ResponseEntity<?> getUserExistByEmail(@PathVariable String email) {
 
         try {
-            return ResponseEntity.ok(userService.getCar(id));
-
-        } catch (FeignException.NotFound e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            boolean exist = userService.userExists(email);
+            return ResponseEntity.ok(exist);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
     }
@@ -122,7 +120,5 @@ public class UserController {
         }
     }
 
-    public ResponseEntity<?> fallbackGetCar (@PathVariable Integer id, RuntimeException e){
-        return ResponseEntity.ok("Servicio no disponible, inténtelo más tarde");
-    }
+
 }

@@ -17,4 +17,7 @@ public interface UserClient {
 
     @DeleteMapping("/users/{email}")
     public String deleteUser(@PathVariable String email);
+
+    @GetMapping("/users/exist/{email}")
+    public boolean getUserExistsByEmail(@PathVariable String email);
 }
