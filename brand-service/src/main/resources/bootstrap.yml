@@ -1,0 +1,57 @@
+spring:
+  application:
+    name: brand-service
+
+
+  datasource:
+    driver-class-name: ${DB_DRIVER:com.mysql.cj.jdbc.Driver}
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:8002}/${DB_NAME:Brand}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: ${DB_DIALECT:org.hibernate.dialect.MySQLDialect}
+
+
+  liquibase:
+    change-log: classpath:db/changelog/changelog.xml
+
+  servlet:
+    multipart:
+      max-file-size: ${MAX_FILE_SIZE:200MB}
+      max-request-size: ${MAX_REQUEST_SIZE:215MB}
+
+server:
+  servlet:
+    session:
+      timeout: ${SESSION_TIMOUT:60s}
+
+
+  port: ${PORT:${SERVER_PORT:0}}
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      default-zone: http://localhost:8761/eureka
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    prefer-ip-address: true
+
+
+openapi:
+  service:
+    title: brand-service doc
+    version: 1.0.0
+    url: http://localhost:8080 #api gateway url
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html

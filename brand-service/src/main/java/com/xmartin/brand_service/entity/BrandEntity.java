@@ -1,4 +1,4 @@
-package com.xmartin.carregistry.entity;
+package com.xmartin.brand_service.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,22 +7,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
-@Table(name = "user")
-public class UserEntity {
-
+@Table(name = "brand")
+public class BrandEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
-    @Column(unique = true)
-    private String email;
-    private String password;
-    private String role;
-    private byte[] image;
-
-
+    private Integer warranty;
+    private String country;
 }

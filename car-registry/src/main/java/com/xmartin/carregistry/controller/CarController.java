@@ -26,8 +26,9 @@ import java.util.concurrent.CompletableFuture;
 
 @RestController
 @Slf4j
-@RequestMapping("/concessionaire/cars")
+@RequestMapping("/cars")
 @RequiredArgsConstructor
+@CrossOrigin
 public class CarController {
 
     //proporcionamos instancia del service

@@ -1,13 +1,14 @@
-package com.xmartin.carregistry.service.impl;
+package com.xmartin.brand_service.service.impl;
 
-import com.xmartin.carregistry.domain.Brand;
-import com.xmartin.carregistry.entity.BrandEntity;
-import com.xmartin.carregistry.exceptions.BrandConflictException;
-import com.xmartin.carregistry.exceptions.BrandNotFoundException;
-import com.xmartin.carregistry.exceptions.FailedToLoadBrandsException;
-import com.xmartin.carregistry.repository.BrandRepository;
-import com.xmartin.carregistry.service.BrandService;
-import com.xmartin.carregistry.service.converters.BrandConverter;
+
+import com.xmartin.brand_service.domain.Brand;
+import com.xmartin.brand_service.entity.BrandEntity;
+import com.xmartin.brand_service.exceptions.BrandConflictException;
+import com.xmartin.brand_service.exceptions.BrandNotFoundException;
+import com.xmartin.brand_service.exceptions.FailedToLoadBrandsException;
+import com.xmartin.brand_service.repository.BrandRepository;
+import com.xmartin.brand_service.service.BrandService;
+import com.xmartin.brand_service.service.converters.BrandConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
@@ -104,6 +105,12 @@ public class BrandServiceImpl implements BrandService {
     public Brand getBrandById(Integer id) throws BrandNotFoundException {
         return repository.findById(id).map(brandConverter::toBrand)
                 .orElseThrow(() -> new BrandNotFoundException("Brand with ID " + id + " was not found"));
+    }
+
+    @Override
+    public Brand getBrandByName(String name) throws BrandNotFoundException {
+        return repository.findByNameIgnoreCase(name).map(brandConverter::toBrand)
+                .orElseThrow(() -> new BrandNotFoundException("Brand with name: " + name + " was not found"));
     }
 
     @Override

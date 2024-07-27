@@ -15,7 +15,7 @@ public interface CarService {
 
     CompletableFuture<List<Car>> getCars(Pageable pageable);
 
-    Car getCarById(Integer id);
+    Car getCarById(Integer id) throws BrandNotFoundException;
 
     Car updateCar(Car car, Integer id) throws CarNotFoundException, BrandNotFoundException;
 
@@ -25,5 +25,5 @@ public interface CarService {
 
     List<Car> uploadCars(MultipartFile file) throws BrandNotFoundException, FailedToLoadCarsException;
 
-    String downloadCars();
+    String downloadCars() throws BrandNotFoundException;
 }

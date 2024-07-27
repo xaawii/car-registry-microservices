@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CarRequest {
-    private String brand;
+    private Integer brandId;
     private String model;
     private Integer mileage;
     private Double price;

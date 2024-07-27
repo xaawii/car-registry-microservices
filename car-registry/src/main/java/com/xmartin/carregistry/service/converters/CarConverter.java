@@ -1,22 +1,21 @@
 package com.xmartin.carregistry.service.converters;
 
+import com.xmartin.carregistry.domain.Brand;
 import com.xmartin.carregistry.domain.Car;
 import com.xmartin.carregistry.entity.CarEntity;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-@RequiredArgsConstructor
 public class CarConverter {
 
-    private final BrandConverter brandConverter;
 
     public Car toCar(CarEntity carEntity) {
         Car car = new Car();
+        Brand brand = new Brand();
+        brand.setId(carEntity.getBrandId());
         car.setId(carEntity.getId());
-        car.setBrand(brandConverter.toBrand(carEntity.getBrand()));
         car.setColour(carEntity.getColour());
         car.setMileage(carEntity.getMileage());
         car.setDescription(carEntity.getDescription());
@@ -31,7 +30,7 @@ public class CarConverter {
     public CarEntity toEntity(Car car) {
         CarEntity carEntity = new CarEntity();
         carEntity.setId(car.getId());
-        carEntity.setBrand(brandConverter.toEntity(car.getBrand()));
+        carEntity.setBrandId(car.getBrand().getId());
         carEntity.setColour(car.getColour());
         carEntity.setMileage(car.getMileage());
         carEntity.setDescription(car.getDescription());
