@@ -18,7 +18,7 @@ public class CarMapper {
         if (carRequest == null) return null;
         Car car = new Car();
         Brand brand = new Brand();
-        brand.setId(carRequest.getBrandId());
+        brand.setName(carRequest.getBrand());
         car.setBrand(brand);
         car.setColour(carRequest.getColour());
         car.setMileage(carRequest.getMileage());

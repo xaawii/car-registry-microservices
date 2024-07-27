@@ -22,6 +22,7 @@ import java.io.IOException;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 @Slf4j
+@CrossOrigin
 public class UserController {
 
     public final UserServiceImpl userService;

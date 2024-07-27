@@ -15,6 +15,7 @@ public class CarConverter {
         Car car = new Car();
         Brand brand = new Brand();
         brand.setId(carEntity.getBrandId());
+        car.setBrand(brand);
         car.setId(carEntity.getId());
         car.setColour(carEntity.getColour());
         car.setMileage(carEntity.getMileage());

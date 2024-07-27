@@ -13,16 +13,16 @@ import java.util.Optional;
 @FeignClient(name = "brand-service")
 public interface BrandClient {
 
-    @GetMapping("/brand/{id}")
+    @GetMapping("/brands/{id}")
     public Optional<Brand> getBrandById(@PathVariable Integer id);
 
-    @GetMapping("/brand/name/{name}")
+    @GetMapping("/brands/name/{name}")
     public Optional<Brand> getBrandByName(@PathVariable String name);
 
-    @GetMapping("/brand")
+    @GetMapping("/brands")
     public List<Brand> getAllBrands();
 
-    @DeleteMapping("/brand/{id}")
+    @DeleteMapping("/brands/{id}")
     String deleteBrandById(@PathVariable Integer id);
 
 }
