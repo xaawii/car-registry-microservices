@@ -93,7 +93,7 @@ public class CarController {
     @Operation(summary = "Get cars", description = "Returns a list of car data.")
     @GetMapping
     public CompletableFuture<ResponseEntity<?>> getCars(@RequestParam(defaultValue = "0") int page,
-                                                        @RequestParam(defaultValue = "10") int size) {
+                                                        @RequestParam(defaultValue = "10") int size) throws BrandNotFoundException {
 
 
         return service.getCars(PageRequest.of(page, size))
@@ -146,6 +146,18 @@ public class CarController {
 
         } catch (CarNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @Operation(summary = "Delete all cars by Brand ID", description = "Delete all cars by the specified Brand ID.")
+    @DeleteMapping("/brand/{brandId}")
+    public ResponseEntity<String> deleteAllCarsByBrandId(@PathVariable Integer brandId) {
+        try {
+            service.deleteAllCarsByBrandId(brandId);
+            return ResponseEntity.ok("All cars from Brand with ID: " + brandId + " have been deleted.");
+
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }

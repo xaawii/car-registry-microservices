@@ -13,13 +13,15 @@ import java.util.concurrent.CompletableFuture;
 public interface CarService {
     Car addCar(Car car) throws BrandNotFoundException;
 
-    CompletableFuture<List<Car>> getCars(Pageable pageable);
+    CompletableFuture<List<Car>> getCars(Pageable pageable) throws BrandNotFoundException;
 
-    Car getCarById(Integer id) throws BrandNotFoundException;
+    Car getCarById(Integer id) throws BrandNotFoundException, CarNotFoundException;
 
     Car updateCar(Car car, Integer id) throws CarNotFoundException, BrandNotFoundException;
 
     void deleteCar(Integer id) throws CarNotFoundException;
+
+    void deleteAllCarsByBrandId(Integer brandId);
 
     CompletableFuture<List<Car>> addCars(List<Car> cars) throws BrandNotFoundException;
 
