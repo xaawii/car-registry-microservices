@@ -9,7 +9,6 @@ import com.xmartin.carregistry.exceptions.BrandNotFoundException;
 import com.xmartin.carregistry.exceptions.CarNotFoundException;
 import com.xmartin.carregistry.exceptions.FailedToLoadCarsException;
 import com.xmartin.carregistry.service.CarService;
-import feign.FeignException;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,8 +48,6 @@ public class CarController {
 
         } catch (BrandNotFoundException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        } catch (FeignException.NotFound e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.contentUTF8());
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
@@ -136,8 +133,6 @@ public class CarController {
 
         } catch (CarNotFoundException | BrandNotFoundException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
         }
     }
 

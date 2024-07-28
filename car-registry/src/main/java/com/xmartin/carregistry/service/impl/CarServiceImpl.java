@@ -82,7 +82,7 @@ public class CarServiceImpl implements CarService {
 
         if (brandList.isEmpty()) return CompletableFuture.completedFuture(new ArrayList<>());
 
-        Map<Integer, Brand> brandMap = brandClient.getAllBrands().stream()
+        Map<Integer, Brand> brandMap = brandList.get().stream()
                 .collect(Collectors.toMap(Brand::getId, Function.identity()));
 
         carList.forEach(car -> car.setBrand(brandMap.get(car.getBrand().getId())));
@@ -119,17 +119,19 @@ public class CarServiceImpl implements CarService {
     @Transactional
     public Car updateCar(Car car, Integer id) throws CarNotFoundException, BrandNotFoundException {
 
-        CarEntity carEntity = carRepository.findById(id)
+        carRepository.findById(id)
                 .orElseThrow(() -> new CarNotFoundException("Car with ID " + id + " was not found"));
 
-        Brand brand = brandClient.getBrandById(carEntity.getBrandId())
-                .orElseThrow(() -> new BrandNotFoundException("Brand with ID "
-                        + car.getBrand().getId() + " was not found"));
+        Brand brand = brandClient.getBrandByName(car.getBrand().getName())
+                .orElseThrow(() -> new BrandNotFoundException("Brand with name: "
+                        + car.getBrand().getName() + " was not found"));
 
         CarEntity updatedCarEntity = carConverter.toEntity(car);
         updatedCarEntity.setId(id);
         updatedCarEntity.setBrandId(brand.getId());
-        return carConverter.toCar(carRepository.save(updatedCarEntity));
+        Car updatedCar = carConverter.toCar(carRepository.save(updatedCarEntity));
+        updatedCar.setBrand(brand);
+        return updatedCar;
 
 
     }
@@ -167,11 +169,11 @@ public class CarServiceImpl implements CarService {
 
         if (brandList.isEmpty()) throw new BrandNotFoundException("Some brand not found");
 
-        Map<Integer, Brand> brandMap = brandClient.getAllBrands().stream()
-                .collect(Collectors.toMap(Brand::getId, Function.identity()));
+        Map<String, Brand> brandMap = brandList.get().stream()
+                .collect(Collectors.toMap(Brand::getName, Function.identity()));
 
         for (Car car : cars) {
-            Brand brand = Optional.ofNullable(brandMap.get(car.getBrand().getId()))
+            Brand brand = Optional.ofNullable(brandMap.get(car.getBrand().getName()))
                     .orElseThrow(() -> new BrandNotFoundException("Some brand not found"));
             car.setBrand(brand);
         }
@@ -181,9 +183,13 @@ public class CarServiceImpl implements CarService {
 
         List<Car> savedCars = carRepository.saveAll(carEntities).stream().map(carConverter::toCar).toList();
 
-        savedCars.forEach(car -> car.setBrand(brandMap.get(car.getBrand().getId())));
+        Map<Integer, Brand> brandIdMap = brandList.get().stream()
+                .collect(Collectors.toMap(Brand::getId, Function.identity()));
 
-        return CompletableFuture.completedFuture(carConverter.toCarList(carEntities));
+        savedCars.forEach(car -> car.setBrand(brandIdMap.get(car.getBrand().getId())));
+
+
+        return CompletableFuture.completedFuture(savedCars);
 
     }
 
