@@ -1,9 +1,9 @@
 package com.xmartin.carregistry.controller.mappers;
 
-import com.xmartin.carregistry.domain.Brand;
-import com.xmartin.carregistry.domain.Car;
 import com.xmartin.carregistry.controller.dtos.CarRequest;
 import com.xmartin.carregistry.controller.dtos.CarResponse;
+import com.xmartin.carregistry.domain.Brand;
+import com.xmartin.carregistry.domain.Car;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

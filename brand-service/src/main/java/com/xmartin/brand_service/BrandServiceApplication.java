@@ -1,17 +1,15 @@
-package com.xmartin.carregistry;
+package com.xmartin.brand_service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients
-public class CarRegistryApplication {
+public class BrandServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CarRegistryApplication.class, args);
+		SpringApplication.run(BrandServiceApplication.class, args);
 	}
 
 }

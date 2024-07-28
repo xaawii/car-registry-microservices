@@ -1,5 +1,4 @@
-package com.xmartin.carregistry.domain;
-
+package com.xmartin.brand_service.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,15 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
-public class User {
-
-
+public class Brand {
     private Integer id;
     private String name;
-    private String email;
-    private String password;
-    private String role;
-
-
+    private Integer warranty;
+    private String country;
 }

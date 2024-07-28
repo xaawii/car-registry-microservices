@@ -26,8 +26,9 @@ import java.util.concurrent.CompletableFuture;
 
 @RestController
 @Slf4j
-@RequestMapping("/concessionaire/cars")
+@RequestMapping("/cars")
 @RequiredArgsConstructor
+@CrossOrigin
 public class CarController {
 
     //proporcionamos instancia del service
@@ -132,8 +133,6 @@ public class CarController {
 
         } catch (CarNotFoundException | BrandNotFoundException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
         }
     }
 

@@ -1,12 +1,13 @@
-package com.xmartin.carregistry.controller;
+package com.xmartin.brand_service.controller;
 
-import com.xmartin.carregistry.controller.dtos.BrandRequest;
-import com.xmartin.carregistry.controller.dtos.BrandResponse;
-import com.xmartin.carregistry.controller.mappers.BrandMapper;
-import com.xmartin.carregistry.exceptions.BrandConflictException;
-import com.xmartin.carregistry.exceptions.BrandNotFoundException;
-import com.xmartin.carregistry.exceptions.FailedToLoadBrandsException;
-import com.xmartin.carregistry.service.BrandService;
+
+import com.xmartin.brand_service.controller.dtos.BrandRequest;
+import com.xmartin.brand_service.controller.dtos.BrandResponse;
+import com.xmartin.brand_service.controller.mappers.BrandMapper;
+import com.xmartin.brand_service.exceptions.BrandConflictException;
+import com.xmartin.brand_service.exceptions.BrandNotFoundException;
+import com.xmartin.brand_service.exceptions.FailedToLoadBrandsException;
+import com.xmartin.brand_service.service.BrandService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,8 +24,9 @@ import java.util.concurrent.CompletableFuture;
 @RestController
 
 @Slf4j
-@RequestMapping("/concessionaire/brands")
+@RequestMapping("/brands")
 @RequiredArgsConstructor
+@CrossOrigin
 public class BrandController {
 
 
@@ -93,6 +95,21 @@ public class BrandController {
     public ResponseEntity<?> getBrandById(@PathVariable Integer id) {
         try {
             BrandResponse response = brandMapper.toResponse(service.getBrandById(id));
+
+            return ResponseEntity.ok(response);
+
+        } catch (BrandNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @Operation(summary = "Get brand by name", description = "Returns a brand data for the specified name.")
+    @GetMapping("/name/{name}")
+    public ResponseEntity<?> getBrandByName(@PathVariable String name) {
+        try {
+            BrandResponse response = brandMapper.toResponse(service.getBrandByName(name));
 
             return ResponseEntity.ok(response);
 

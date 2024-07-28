@@ -7,7 +7,7 @@ spring:
 
   datasource:
     driver-class-name: ${DB_DRIVER:com.mysql.cj.jdbc.Driver}
-    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:8002}/${DB_NAME:CarRegistry}
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:8010}/${DB_NAME:Car}
     username: ${DB_USER}
     password: ${DB_PASSWORD}
 

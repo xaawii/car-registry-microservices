@@ -1,7 +1,8 @@
-package com.xmartin.carregistry.service.converters;
+package com.xmartin.brand_service.service.converters;
 
-import com.xmartin.carregistry.domain.Brand;
-import com.xmartin.carregistry.entity.BrandEntity;
+
+import com.xmartin.brand_service.domain.Brand;
+import com.xmartin.brand_service.entity.BrandEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
