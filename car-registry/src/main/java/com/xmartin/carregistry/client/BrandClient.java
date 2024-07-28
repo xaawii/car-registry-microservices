@@ -3,7 +3,6 @@ package com.xmartin.carregistry.client;
 
 import com.xmartin.carregistry.domain.Brand;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -22,7 +21,5 @@ public interface BrandClient {
     @GetMapping("/brands")
     public List<Brand> getAllBrands();
 
-    @DeleteMapping("/brands/{id}")
-    String deleteBrandById(@PathVariable Integer id);
 
 }

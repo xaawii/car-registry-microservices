@@ -26,7 +26,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -36,180 +39,106 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CarServiceImpl implements CarService {
 
-
     private final CarRepository carRepository;
-
     private final BrandClient brandClient;
-
     private final CarConverter carConverter;
-    private static final String[] HEADERS = {"brand", "model", "description", "colour", "fuel_type"
-            , "mileage", "num_doors", "price", "year"};
 
-    /*
-     método para añadir un coche, lo convierte de modelo a entity y lo guarda en la bbdd, devuelve el
-     objeto convertido a modelo.
-     */
+    private static final String[] HEADERS = {"brand", "model", "description", "colour", "fuel_type",
+            "mileage", "num_doors", "price", "year"};
+
     @Override
     @Transactional
     public Car addCar(Car car) throws BrandNotFoundException {
-
-        Brand brand = brandClient.getBrandByName(car.getBrand().getName())
-                .orElseThrow(() -> new BrandNotFoundException("Brand with name: "
-                        + car.getBrand().getName() + " was not found"));
-
+        Brand brand = getBrandByName(car.getBrand().getName());
         CarEntity newCar = carConverter.toEntity(car);
         newCar.setBrandId(brand.getId());
 
         Car savedCar = carConverter.toCar(carRepository.save(newCar));
         savedCar.setBrand(brand);
         return savedCar;
-
-
     }
 
-    /*
-     Usamos Async en este método ya que podría ser una consulta enorme con miles o millones de registros.
-     Devuelve una lista de coches convertida de entity a modelo.
-      */
     @Override
     @Async
     @Transactional
-    public CompletableFuture<List<Car>> getCars(Pageable pageable) {
-        List<Car> carList = carConverter
-                .toCarList(carRepository.findAll(pageable).stream().toList());
+    public CompletableFuture<List<Car>> getCars(Pageable pageable) throws BrandNotFoundException {
+        List<Brand> brandList = getAllBrands();
+        List<Car> carList = carConverter.toCarList(carRepository.findAll(pageable).stream().toList());
 
-        Optional<List<Brand>> brandList = Optional.ofNullable(brandClient.getAllBrands());
-
-        if (brandList.isEmpty()) return CompletableFuture.completedFuture(new ArrayList<>());
-
-        Map<Integer, Brand> brandMap = brandList.get().stream()
-                .collect(Collectors.toMap(Brand::getId, Function.identity()));
+        Map<Integer, Brand> brandMap = convertToBrandMap(Brand::getId, brandList);
 
         carList.forEach(car -> car.setBrand(brandMap.get(car.getBrand().getId())));
-
         return CompletableFuture.completedFuture(carList);
     }
 
-    /*
-    método para obtener un coche con el id, si existe, devovlemos el objeto convertido a modelo, si no
-    devolvemos nulo.
-     */
     @Override
     @Transactional
-    public Car getCarById(Integer id) throws BrandNotFoundException {
-
-        Car car = carRepository.findById(id).map(carConverter::toCar).orElse(null);
-        if (car != null) {
-            Brand brand = brandClient.getBrandById(car.getBrand().getId())
-                    .orElseThrow(() -> new BrandNotFoundException("Brand with ID "
-                            + car.getBrand().getId() + " was not found"));
-
-            car.setBrand(brand);
-            return car;
-        }
-        return null;
+    public Car getCarById(Integer id) throws BrandNotFoundException, CarNotFoundException {
+        Car car = findCarById(id);
+        Brand brand = getBrandById(car.getBrand().getId());
+        car.setBrand(brand);
+        return car;
     }
 
-    /*
-    método para actualizar un coche, lo busca en la bbdd con el id, si existe lo convierte de modelo a entity, le settea
-    por si acaso el id de la URL y lo guarda en la bbdd, devuelve el objeto convertido a modelo.
-    Si no existe devuelve nulo.
-     */
     @Override
     @Transactional
     public Car updateCar(Car car, Integer id) throws CarNotFoundException, BrandNotFoundException {
+        ensureCarExists(id);
 
-        carRepository.findById(id)
-                .orElseThrow(() -> new CarNotFoundException("Car with ID " + id + " was not found"));
-
-        Brand brand = brandClient.getBrandByName(car.getBrand().getName())
-                .orElseThrow(() -> new BrandNotFoundException("Brand with name: "
-                        + car.getBrand().getName() + " was not found"));
-
+        Brand brand = getBrandByName(car.getBrand().getName());
         CarEntity updatedCarEntity = carConverter.toEntity(car);
         updatedCarEntity.setId(id);
         updatedCarEntity.setBrandId(brand.getId());
+
         Car updatedCar = carConverter.toCar(carRepository.save(updatedCarEntity));
         updatedCar.setBrand(brand);
         return updatedCar;
-
-
     }
 
-    /*
-    método para eliminar un coche por el id, busca si existe en la bbdd, si existe lo elimina y devuelve true, si no
-    existe, devuelve false.
-     */
     @Override
     @Transactional
     public void deleteCar(Integer id) throws CarNotFoundException {
-        CarEntity carEntity = carRepository.findById(id)
-                .orElseThrow(() -> new CarNotFoundException("Car with ID " + id + " was not found"));
-
-        brandClient.deleteBrandById(carEntity.getBrandId());
-
+        CarEntity carEntity = findCarEntityById(id);
         carRepository.delete(carEntity);
-
     }
 
-    /*
-    Usamos Async en este método ya que podríamos insertar una enorme cantidad de registros y las inserciones
-    pueden ser lentas.
-    Convierte una lista de coches modelo a entidad y por cada uno comprueba que tengan como marca una que
-    exista en la tabla Brand, si alguna no existe se lanza una excepción. Si tod está bien, se insertan en la
-    bbdd y devuelve un completable Future con la lista de coches añadidos.
-     */
+    @Override
+    @Transactional
+    public void deleteAllCarsByBrandId(Integer brandId) {
+        carRepository.deleteAllByBrandId(brandId);
+    }
 
     @Override
     @Async
     @Transactional
     public CompletableFuture<List<Car>> addCars(List<Car> cars) throws BrandNotFoundException {
-
-        Optional<List<Brand>> brandList = Optional.ofNullable(brandClient.getAllBrands());
-
-        if (brandList.isEmpty()) throw new BrandNotFoundException("Some brand not found");
-
-        Map<String, Brand> brandMap = brandList.get().stream()
-                .collect(Collectors.toMap(Brand::getName, Function.identity()));
+        Map<String, Brand> brandMap = getBrandMap(Brand::getName);
 
         for (Car car : cars) {
-            Brand brand = Optional.ofNullable(brandMap.get(car.getBrand().getName()))
-                    .orElseThrow(() -> new BrandNotFoundException("Some brand not found"));
+            Brand brand = brandMap.get(car.getBrand().getName());
+            if (brand == null) {
+                throw new BrandNotFoundException("Some brand not found");
+            }
             car.setBrand(brand);
         }
 
         List<CarEntity> carEntities = carConverter.toEntityList(cars);
-
-
         List<Car> savedCars = carRepository.saveAll(carEntities).stream().map(carConverter::toCar).toList();
 
-        Map<Integer, Brand> brandIdMap = brandList.get().stream()
-                .collect(Collectors.toMap(Brand::getId, Function.identity()));
-
+        Map<Integer, Brand> brandIdMap = getBrandMap(Brand::getId);
         savedCars.forEach(car -> car.setBrand(brandIdMap.get(car.getBrand().getId())));
 
-
         return CompletableFuture.completedFuture(savedCars);
-
     }
 
     @Override
     public List<Car> uploadCars(MultipartFile file) throws BrandNotFoundException, FailedToLoadCarsException {
-
         List<CarEntity> carEntityList = new ArrayList<>();
+        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8));
+             CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim())) {
 
-        try (BufferedReader fileReader =
-                     new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8));
-             CSVParser csvParser = new CSVParser(fileReader,
-                     CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());) {
-
-
-            Iterable<CSVRecord> csvRecordList = csvParser.getRecords();
-
-            for (CSVRecord csvRecord : csvRecordList) {
-                Brand brand = brandClient.getBrandByName(csvRecord.get("brand"))
-                        .orElseThrow(() -> new BrandNotFoundException("Some brand was not found"));
-
+            for (CSVRecord csvRecord : csvParser.getRecords()) {
+                Brand brand = getBrandByName(csvRecord.get("brand"));
                 CarEntity carEntity = CarEntity.builder()
                         .brandId(brand.getId())
                         .model(csvRecord.get("model"))
@@ -224,11 +153,10 @@ public class CarServiceImpl implements CarService {
 
                 carEntityList.add(carEntity);
             }
-
             return carConverter.toCarList(carRepository.saveAll(carEntityList));
 
         } catch (IOException e) {
-            log.error("Failed to upload cars");
+            log.error("Failed to upload cars", e);
             throw new FailedToLoadCarsException("Failed to upload cars");
         }
     }
@@ -237,26 +165,63 @@ public class CarServiceImpl implements CarService {
     public String downloadCars() throws BrandNotFoundException {
         List<CarEntity> carEntityList = carRepository.findAll();
         StringBuilder csvContent = new StringBuilder();
-        csvContent.append(Arrays.toString(HEADERS).replace("[", "")
-                .replace("]", "").replace(" ", "")).append("\n");
+        csvContent.append(String.join(",", HEADERS)).append("\n");
 
         for (CarEntity carEntity : carEntityList) {
-            Brand brand = brandClient.getBrandById(carEntity.getBrandId())
-                    .orElseThrow(() -> new BrandNotFoundException("Brand with ID "
-                            + carEntity.getBrandId() + " was not found"));
-
-            csvContent.append(brand.getName()).append(",")
-                    .append(carEntity.getModel()).append(",")
-                    .append(carEntity.getDescription()).append(",")
-                    .append(carEntity.getColour()).append(",")
-                    .append(carEntity.getFuelType()).append(",")
-                    .append(carEntity.getMileage()).append(",")
-                    .append(carEntity.getNumDoors()).append(",")
-                    .append(carEntity.getPrice()).append(",")
-                    .append(carEntity.getYear()).append("\n");
+            Brand brand = getBrandById(carEntity.getBrandId());
+            csvContent.append(String.format("%s,%s,%s,%s,%s,%d,%d,%f,%d%n",
+                    brand.getName(),
+                    carEntity.getModel(),
+                    carEntity.getDescription(),
+                    carEntity.getColour(),
+                    carEntity.getFuelType(),
+                    carEntity.getMileage(),
+                    carEntity.getNumDoors(),
+                    carEntity.getPrice(),
+                    carEntity.getYear()));
         }
-
-
         return csvContent.toString();
+    }
+
+    // Métodos auxiliares privados
+
+    private Car findCarById(Integer id) throws CarNotFoundException {
+        return carRepository.findById(id).map(carConverter::toCar)
+                .orElseThrow(() -> new CarNotFoundException("Car with ID " + id + " was not found"));
+    }
+
+    private CarEntity findCarEntityById(Integer id) throws CarNotFoundException {
+        return carRepository.findById(id)
+                .orElseThrow(() -> new CarNotFoundException("Car with ID " + id + " was not found"));
+    }
+
+    private void ensureCarExists(Integer id) throws CarNotFoundException {
+        if (!carRepository.existsById(id)) {
+            throw new CarNotFoundException("Car with ID " + id + " was not found");
+        }
+    }
+
+    private Brand getBrandByName(String name) throws BrandNotFoundException {
+        return brandClient.getBrandByName(name)
+                .orElseThrow(() -> new BrandNotFoundException("Brand with name: " + name + " was not found"));
+    }
+
+    private Brand getBrandById(Integer id) throws BrandNotFoundException {
+        return brandClient.getBrandById(id)
+                .orElseThrow(() -> new BrandNotFoundException("Brand with ID " + id + " was not found"));
+    }
+
+    private List<Brand> getAllBrands() throws BrandNotFoundException {
+        return Optional.ofNullable(brandClient.getAllBrands())
+                .orElseThrow(() -> new BrandNotFoundException("No brands found"));
+    }
+
+    private <K> Map<K, Brand> getBrandMap(Function<Brand, K> keyMapper) throws BrandNotFoundException {
+        List<Brand> brandList = getAllBrands();
+        return convertToBrandMap(keyMapper, brandList);
+    }
+
+    private <K> Map<K, Brand> convertToBrandMap(Function<Brand, K> keyMapper, List<Brand> brandList) {
+        return brandList.stream().collect(Collectors.toMap(keyMapper, Function.identity()));
     }
 }
